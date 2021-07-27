@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slash Ticker Assignment</title>
+
+    <style>
+        body {
+            background: black;
+        }
+
+        h1.title {
+            background-image: url(assets/bg.png);
+            align-self: center;
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        #title {
+            padding: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        #ticker-wrapper {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        #ticker-wrapper ul {
+            padding: 0;
+            list-style: none;
+        }
+
+        #ticker-wrapper img {
+            width: 60px;
+            height: 60px;
+            margin: 5px 5px 5px 5px;
+            grid-area: img;
+            border: 2px solid red;
+            border-radius: 2px;
+            background-color: red;
+        }
+
+        .messageContent {
+            margin: 15px 0 0;
+            font-size: 16px;
+            line-height: 28px;
+            grid-area: p;
+            word-wrap: break-word;
+            color: white;
+        }
+
+        #ticker-wrapper li:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        #ticker-wrapper li {
+            padding: 20px;
+            background-image: url(assets/post_bg.png);
+            background-size: cover;
+            display: grid;
+            grid-template-columns: 0.4fr 1.6fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+            gap: 0px 0px;
+            grid-template-areas:
+                "img name name name name name"
+                "img date date date date date"
+                "p p p p p p"
+                "p p p p p p"
+                "p p p p p p";
+        }
+
+        .userNameSpan {
+            grid-area: name;
+            color: white;
+        }
+
+        .dateSpan {
+            grid-area: date;
+            color: red;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+
+
+    <script src="jquery-3.5.0.js"></script>
+
+    <script>
+        var images = new Array();
+        images[0] = "https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg";
+        images[1] = "http://s3.amazonaws.com/37assets/svn/765-default-avatar.png";
+        images[2] = "https://st4.depositphotos.com/1012074/20946/v/600/depositphotos_209469984-stock-illustration-flat-isolated-vector-illustration-icon.jpg";
+        images[3] = "https://st4.depositphotos.com/1012074/25299/v/600/depositphotos_252991838-stock-illustration-young-avatar-face-with-sunglasses.jpg";
+
+        class Message {
+
+            constructor(senderName, body) {
+                this.senderName = senderName;
+                let date = new Date();
+                this.date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' +
+                    (('0' + date.getHours()).slice(-2)) + ':' + (('0' + date.getMinutes()).slice(-2));
+                this.body = body;
+            }
+
+            display = function () {
+                return this.senderName + "<br>" + this.date + "<br> " + this.body;
+            }
+        }
+        var messages = new Array(10);
+
+        console.log(messages);
+        for (let i = 0; i < messages.length; i++) {
+            messages[i] = new Message("User " + i, "Messageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee " + i);
+        }
+        console.log(messages);
+
+        function createMessages() {
+            let ul = $("#ul");
+            for (let i = 0; i < messages.length; i++) {
+                let randImg = Math.floor(Math.random() * 4);
+                let newImg = $("<img>").attr("src", images[randImg]);
+                let newLi = $("<li>");
+                let userNameSpan = $("<span>").html(messages[i].senderName);
+                userNameSpan.attr("class", "userNameSpan");
+                let dateSpan = $("<span>").html(messages[i].date);
+                dateSpan.attr("class", "dateSpan");
+                let newP = $("<div>").html(messages[i].body);
+                newP.attr("class", "messageContent")
+                newLi.append(newImg);
+                newLi.append(userNameSpan);
+                newLi.append(dateSpan);
+                newLi.append(newP);
+                ul.append(newLi);
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="createMessages()">
+
+
+    <h1 class="title">
+        <img id="title" src="assets/title.png" alt="">
+    </h1>
+
+    <div id="ticker-wrapper">
+        <ul id="ul">
+
+        </ul>
+    </div>
+
+    <script src="jquery.easy-ticker.min.js"></script>
+
+    <script>
+        $("#ticker-wrapper").easyTicker({
+            direction: 'down',
+            easing: 'swing',
+            visible: 3,
+            mousePause: 1
+        });
+    </script>
+</body>
+
+</html>
